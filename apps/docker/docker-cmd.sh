@@ -79,6 +79,7 @@ while [[ $# -gt 0 ]]; do
         pull)
             set -x
             docker compose --profile local --profile dev --profile dev-build pull
+            docker image prune -f
             set +x
             shift
             ;;
@@ -86,6 +87,7 @@ while [[ $# -gt 0 ]]; do
         build:nocache)
             set -x
             docker compose --profile local --profile dev --profile dev-build build --no-cache
+            docker image prune -f
             docker compose run --rm --no-deps ac-dev-build /bin/bash /azerothcore/apps/docker/docker-build-dev.sh
             set +x
             shift
@@ -93,6 +95,7 @@ while [[ $# -gt 0 ]]; do
 
         clean:build)
             set -x
+            docker image prune -f
             docker compose run --rm --no-deps ac-dev-server bash acore.sh compiler clean
             docker compose run --rm --no-deps ac-dev-server bash acore.sh compiler ccacheClean
             set +x
@@ -138,6 +141,7 @@ while [[ $# -gt 0 ]]; do
         build:prod|prod:build)
             set -x
             docker compose --profile prod build
+            docker image prune -f
             set +x
             shift
             ;;
